@@ -1,0 +1,50 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: user-test
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # Example ACL rules for consuming from topic-test using consumer group my-group
+      - resource:
+          type: topic
+          name: topic-test
+          patternType: literal
+        operation: Read
+        host: "*"
+      - resource:
+          type: topic
+          name: topic-test
+          patternType: literal
+        operation: Describe
+        host: "*"
+      - resource:
+          type: group
+          name: my-group
+          patternType: literal
+        operation: Read
+        host: "*"
+      # Example ACL rules for producing to topic topic-test
+      - resource:
+          type: topic
+          name: topic-test
+          patternType: literal
+        operation: Write
+        host: "*"
+      - resource:
+          type: topic
+          name: topic-test
+          patternType: literal
+        operation: Create
+        host: "*"
+      - resource:
+          type: topic
+          name: topic-test
+          patternType: literal
+        operation: Describe
+        host: "*"
